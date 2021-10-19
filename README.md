@@ -1,7 +1,7 @@
 # Zuko-App
 
 Framework: https://vue-native.io/
-
+Hallo, hier ist eine Änderung
 
 ### Projektbeschreibung:
 Eine App soll mittels QR-Codes erkennen, ob die Person Zugriff auf einen Raum hat oder nicht. Die Zugriffsberechtigungen sollen in einer Datenbank abgelegt und jedes Mal zum Abfragezeitpunkt verschlüsselt transferiert/aktualisiert werden. Wenn ein Nutzer eine Berechtigung benötigt, kann er
