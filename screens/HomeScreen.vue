@@ -2,6 +2,7 @@
   <view class="container">
     <text class="text-color-primary">redirect to QrCode</text>
     <button title="go to QrCode!" @press="goToQrCode" />
+    <button title="go to Login!" @press="goToLogin" />
   </view>
 </template>
 
@@ -15,6 +16,9 @@ export default {
   methods: {
     goToQrCode() {
       this.navigation.navigate("QrCode")
+    },
+    goToLogin() {
+      this.navigation.navigate("Login")
     }
   },
 };

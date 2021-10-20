@@ -7,15 +7,20 @@ import {
   createAppContainer,
   createStackNavigator,
 } from "vue-native-router";
+import Vue from "vue-native-core";
+Vue.use(VueNativeBase);
+import { VueNativeBase } from "native-base";
 
 import HomeScreen from "./screens/HomeScreen.vue";
 import QrCodeScreen from "./screens/QrCodeScreen.vue";
+import LoginScreen from "./screens/Login.vue"
 
 
 const StackNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    QrCode: QrCodeScreen
+    QrCode: QrCodeScreen,
+    Login: LoginScreen
   },
   {
     initialRouteName: 'Home',
@@ -25,6 +30,8 @@ const StackNavigator = createStackNavigator(
 const AppNavigator = createAppContainer(StackNavigator);
 
 export default {
-  components: { AppNavigator },
+  components: { AppNavigator,VueNativeBase},
+
 }
+
 </script>
