@@ -1,9 +1,16 @@
 <template>
- <container>
+ <nb-container>
    <view>
-     <text>Hello world</text>
+     <nb-text>Hello world</nb-text>
+     <nb-text>Was geht ab</nb-text>
    </view>
- </container>
+ </nb-container>
 </template>
+
+<script>
+export default {
+    name: 'Login'
+}
+</script>
 
 
