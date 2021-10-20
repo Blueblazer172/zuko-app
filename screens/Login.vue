@@ -10,14 +10,12 @@
         <nb-item>
           <nb-input
             placeholder="Email"
-            v-model="email"
             auto-capitalize="none"
           />
         </nb-item>
         <nb-item>
           <nb-input
             placeholder="Password"
-            v-model="password"
             auto-capitalize="none"
             secure-text-entry
           />
