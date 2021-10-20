@@ -1,17 +1,30 @@
 <template>
-  <view class="container">
-    <text class="text-color-primary">Zuko App</text>
-  </view>
+  <app-navigator></app-navigator>
 </template>
 
-<style>
-.container {
-  background-color: white;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
+<script>
+import {
+  createAppContainer,
+  createStackNavigator,
+} from "vue-native-router";
+
+import HomeScreen from "./screens/HomeScreen.vue";
+import QrCodeScreen from "./screens/QrCodeScreen.vue";
+
+
+const StackNavigator = createStackNavigator(
+  {
+    Home: HomeScreen,
+    QrCode: QrCodeScreen
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
+
+const AppNavigator = createAppContainer(StackNavigator);
+
+export default {
+  components: { AppNavigator },
 }
-.text-color-primary {
-  color: blue;
-}
-</style>
+</script>
