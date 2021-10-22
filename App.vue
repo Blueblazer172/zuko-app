@@ -3,33 +3,36 @@
 </template>
 
 <script>
-import {createAppContainer, createStackNavigator} from "vue-native-router";
+import {
+    createAppContainer, 
+    createStackNavigator, 
+    createDrawerNavigator
+} from "vue-native-router";
 import {enableScreens} from "react-native-screens";
 import Vue from "vue-native-core";
 import {VueNativeBase} from "native-base";
 import * as Font from "expo-font";
-import HomeScreen from "./screens/HomeScreen.vue";
-import QrCodeScreen from "./screens/QrCodeScreen.vue";
-import LoginScreen from "./screens/Login.vue";
+import HomeScreen from "./src/screens/HomeScreen.vue";
+import QrCodeScreen from "./src/screens/QrCodeScreen.vue";
+import LoginScreen from "./src/screens/Login.vue";
 
 enableScreens(false);
 Vue.use(VueNativeBase);
 
-const StackNavigator = createStackNavigator(
-    {
-        Home: HomeScreen,
-        QrCode: QrCodeScreen,
-        Login: LoginScreen,
-    },
-    {
-        initialRouteName: "Home",
-    }
+const DrawerNavigator = createDrawerNavigator(
+  {
+    Home: HomeScreen,
+    Login: LoginScreen
+  },
+  {
+    initialRouteName: 'Home'
+  }
 );
-const AppNavigator = createAppContainer(StackNavigator);
+const AppNavigator = createAppContainer(DrawerNavigator);
 
 export default {
     name: "App",
-    components: {AppNavigator, VueNativeBase},
+    components: {AppNavigator},
     created() {
         this.loadFonts();
     },
