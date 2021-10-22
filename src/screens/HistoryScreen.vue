@@ -3,14 +3,14 @@
       <nb-container>
         <nb-header>
             <nb-body>
-                <nb-title> QrCode</nb-title>
+                <nb-title> History</nb-title>
             </nb-body>
         </nb-header>
         <image-background :source="homeBg" class="imageContainer">
             <view class="text-container"> </view>
             <view class="text-container">
                 <nb-h1 class="text-color-white">maintenence</nb-h1>
-                <nb-h3 class="text-color-white">QrCodeScanner</nb-h3>
+                <nb-h3 class="text-color-white">soon your access course will be displayed here</nb-h3>
             </view>
             <view :style="{ marginBottom: 80 }">
             </view>
@@ -21,7 +21,7 @@
 <script>
 import homeBg from "../../assets/background.png";
 export default {
-    name: "QrCodeScreen",
+    name: "HistoryScreen",
     data() {
         return {
             homeBg,

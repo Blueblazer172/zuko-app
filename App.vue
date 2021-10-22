@@ -14,7 +14,9 @@ import {VueNativeBase} from "native-base";
 import * as Font from "expo-font";
 import HomeScreen from "./src/screens/HomeScreen.vue";
 import QrCodeScreen from "./src/screens/QrCodeScreen.vue";
-import LoginScreen from "./src/screens/Login.vue";
+import LoginScreen from "./src/screens/LoginScreen.vue";
+import RegisterScreen from "./src/screens/RegisterScreen.vue"
+import HistoryScreen from "./src/screens/HistoryScreen.vue"
 
 enableScreens(false);
 Vue.use(VueNativeBase);
@@ -22,12 +24,16 @@ Vue.use(VueNativeBase);
 const DrawerNavigator = createDrawerNavigator(
   {
     Home: HomeScreen,
-    Login: LoginScreen
+    Login: LoginScreen,
+    Register: RegisterScreen,
+    QrCode: QrCodeScreen,
+    History: HistoryScreen,
   },
   {
     initialRouteName: 'Home'
   }
 );
+
 const AppNavigator = createAppContainer(DrawerNavigator);
 
 export default {
