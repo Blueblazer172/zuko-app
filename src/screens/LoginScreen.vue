@@ -1,17 +1,12 @@
 <template>
     <nb-container>
-        <nb-header>
-            <nb-body>
-                <nb-title> Login</nb-title>
-            </nb-body>
-        </nb-header>
+        <header-template
+            v-bind:navigation="this.props.navigation"
+        ></header-template>
         <nb-content>
             <nb-form>
                 <nb-item>
-                    <nb-input
-                        placeholder="Email"
-                        auto-capitalize="none"
-                    />
+                    <nb-input placeholder="Email" auto-capitalize="none" />
                 </nb-item>
                 <nb-item>
                     <nb-input
@@ -31,8 +26,10 @@
 </template>
 
 <script>
+import HeaderTemplate from "./Header.vue";
 export default {
     name: "Login",
+    components: { HeaderTemplate },
     props: {
         navigation: {
             type: Object,

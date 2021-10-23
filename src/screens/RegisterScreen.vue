@@ -1,17 +1,12 @@
 <template>
     <nb-container>
-        <nb-header>
-            <nb-body>
-                <nb-title> Register</nb-title>
-            </nb-body>
-        </nb-header>
+        <header-template
+            v-bind:navigation="this.props.navigation"
+        ></header-template>
         <nb-content>
             <nb-form>
                 <nb-item>
-                    <nb-input
-                        placeholder="Email"
-                        auto-capitalize="none"
-                    />
+                    <nb-input placeholder="Email" auto-capitalize="none" />
                 </nb-item>
                 <nb-item>
                     <nb-input
@@ -35,7 +30,9 @@
                 <view class="terms-container">
                     <nb-text>By creating an account you agree to our</nb-text>
                     <view class="button-container">
-                    <nb-button transparent><nb-text>Terms & Privacy</nb-text></nb-button>
+                        <nb-button transparent
+                            ><nb-text>Terms & Privacy</nb-text></nb-button
+                        >
                     </view>
                 </view>
             </nb-form>
@@ -44,8 +41,10 @@
 </template>
 
 <script>
+import HeaderTemplate from "./Header.vue";
 export default {
     name: "Register",
+    components: { HeaderTemplate },
     props: {
         navigation: {
             type: Object,
@@ -64,11 +63,11 @@ export default {
 
 <style>
 .terms-container {
-  align-items: center;
-  margin-top: 50;
-  background-color: transparent;
+    align-items: center;
+    margin-top: 50;
+    background-color: transparent;
 }
 .button-container {
-  align-self: center;
+    align-self: center;
 }
 </style>

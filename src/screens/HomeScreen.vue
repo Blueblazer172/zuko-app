@@ -1,22 +1,17 @@
 <template>
     <nb-container>
-        <nb-header>
-            <nb-left>
-                <nb-button transparent>
-                    <nb-icon name="menu"/>
-                </nb-button>
-            </nb-left>
-            <nb-body>
-                <nb-title> Home</nb-title>
-            </nb-body>
-        </nb-header>
+        <header-template
+            v-bind:navigation="this.props.navigation"
+        ></header-template>
         <image-background :source="homeBg" class="imageContainer">
             <view class="text-container"> </view>
             <view class="text-container">
                 <nb-h3 :style="{ marginBottom: 8 }" class="text-color-white"
-                    >Zuko-App</nb-h3>
-                <nb-h3 class="text-color-white">Swipe Right to open Sidebar</nb-h3>
-
+                    >Zuko-App</nb-h3
+                >
+                <nb-h3 class="text-color-white"
+                    >Swipe Right to open Sidebar</nb-h3
+                >
             </view>
             <view :style="{ marginBottom: 80 }"> </view>
         </image-background>
@@ -24,9 +19,11 @@
 </template>
 
 <script>
+import HeaderTemplate from "./Header.vue";
 import homeBg from "../../assets/background.png";
 export default {
     name: "HomeScreen",
+    components: { HeaderTemplate },
     data() {
         return {
             homeBg,
@@ -38,9 +35,7 @@ export default {
         },
     },
     methods: {
-        openDrawer() {
-            this.navigation.navigate("QrCode");
-        },
+        openDrawer() {},
     },
 };
 </script>
