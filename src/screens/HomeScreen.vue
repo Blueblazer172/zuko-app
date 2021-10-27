@@ -3,18 +3,20 @@
         <header-template
             v-bind:navigation="this.props.navigation"
         ></header-template>
-        <image-background :source="homeBg" class="imageContainer">
-            <view class="text-container"> </view>
-            <view class="text-container">
-                <nb-h3 :style="{ marginBottom: 8 }" class="text-color-white"
-                    >Zuko-App</nb-h3
-                >
-                <nb-h3 class="text-color-white"
-                    >Swipe Right to open Sidebar</nb-h3
-                >
-            </view>
-            <view :style="{ marginBottom: 80 }"> </view>
-        </image-background>
+        <nb-grid>
+            <image-background :source="homeBg" class="imageContainer">
+                <view class="text-container">
+                    <nb-h3 :style="{ marginBottom: 8 }" class="text-color-white">
+                        Zuko-App
+                    </nb-h3>
+
+                    <nb-h3 class="text-color-white">
+                        Swipe Right to open Sidebar
+                    </nb-h3>
+                </view>
+                <view :style="{ marginBottom: 80 }"> </view>
+            </image-background>
+        </nb-grid>
     </nb-container>
 </template>
 

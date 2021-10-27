@@ -33,7 +33,9 @@
     "styled-system": "^5.1.5",
     "vue-native-core": "^0.3.1",
     "vue-native-helper": "^0.3.1",
-    "vue-native-router": "^0.2.1"
+    "vue-native-router": "^0.2.1",
+    "expo-barcode-scanner": "~10.2.2",
+    "expo-permissions": "~12.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
