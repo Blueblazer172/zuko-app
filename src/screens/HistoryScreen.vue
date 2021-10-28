@@ -10,6 +10,10 @@
                 <nb-h3 class="text-color-white"
                     >soon your access course will be displayed here</nb-h3
                 >
+                <button :on-press="getDataApi" title="Api-Request"></button>
+                <nb-text class="text-color-white"
+                    >respose data: {{ apiData }}</nb-text
+                >
             </view>
             <view :style="{ marginBottom: 80 }"> </view>
         </image-background>
@@ -19,17 +23,25 @@
 <script>
 import HeaderTemplate from "./Header.vue";
 import homeBg from "../../assets/background.png";
+import axios from "react-native-axios";
 export default {
     name: "HistoryScreen",
-    components: { HeaderTemplate },
+    components: { HeaderTemplate, axios },
     data() {
         return {
             homeBg,
+            apiData: "",
         };
     },
     props: {
         navigation: {
             type: Object,
+        },
+    },
+    methods: {
+        async getDataApi() {
+            let test = await axios.get("https://zuko.r4ck.tech/api");
+            this.apiData = test.data;
         },
     },
 };

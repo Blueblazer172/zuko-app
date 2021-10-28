@@ -6,7 +6,10 @@
         <nb-grid>
             <image-background :source="homeBg" class="imageContainer">
                 <view class="text-container">
-                    <nb-h3 :style="{ marginBottom: 8 }" class="text-color-white">
+                    <nb-h3
+                        :style="{ marginBottom: 8 }"
+                        class="text-color-white"
+                    >
                         Zuko-App
                     </nb-h3>
 
