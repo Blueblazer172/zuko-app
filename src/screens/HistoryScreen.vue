@@ -10,6 +10,8 @@
                 <nb-h3 class="text-color-white"
                     >soon your access course will be displayed here</nb-h3
                 >
+                <button :on-press="CheckLogin" title="CheckLogin"></button>
+                <button :on-press="Logout" title="Logout"></button>
                 <button :on-press="getDataApi" title="Api-Request"></button>
                 <nb-text class="text-color-white"
                     >respose data: {{ apiData }}</nb-text
@@ -24,6 +26,15 @@
 import HeaderTemplate from "./Header.vue";
 import homeBg from "../../assets/background.png";
 import axios from "react-native-axios";
+import store from '../../store';
+import { NavigationActions, StackActions } from 'vue-native-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'MainActivity' })],
+        });
+
 export default {
     name: "HistoryScreen",
     components: { HeaderTemplate, axios },
@@ -43,6 +54,14 @@ export default {
             let test = await axios.get("https://zuko.r4ck.tech/api");
             this.apiData = test.data;
         },
+        Logout(){
+            store.dispatch('LOGOUT', () => this.navigation.dispatch(resetAction))
+        },
+        CheckLogin(){
+             AsyncStorage.getItem('username').then((val) => {
+                 alert("show username when logged in: " + val);
+             })
+        }
     },
 };
 </script>

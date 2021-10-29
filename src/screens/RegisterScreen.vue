@@ -6,7 +6,25 @@
         <nb-content>
             <nb-form>
                 <nb-item>
-                    <nb-input placeholder="Email" auto-capitalize="none" v-model="email"/>
+                    <nb-input
+                        placeholder="Name"
+                        auto-capitalize="none"
+                        v-model="name"
+                    />
+                </nb-item>
+                <nb-item>
+                    <nb-input
+                        placeholder="Userame"
+                        auto-capitalize="none"
+                        v-model="username"
+                    />
+                </nb-item>
+                <nb-item>
+                    <nb-input
+                        placeholder="Email"
+                        auto-capitalize="none"
+                        v-model="email"
+                    />
                 </nb-item>
                 <nb-item>
                     <nb-input
@@ -45,22 +63,16 @@
 <script>
 import HeaderTemplate from "./Header.vue";
 import axios from "react-native-axios";
-import bcrypt from "react-native-bcrypt";
-import isaac from "isaac";
-
-bcrypt.setRandomFallback((len) => {
-	const buf = new Uint8Array(len);
-
-	return buf.map(() => Math.floor(isaac.random() * 256));
-});
 
 export default {
     name: "Register",
     components: { HeaderTemplate, axios },
-    data(){
-        return{
+    data() {
+        return {
             email: this.email,
+            name: this.name,
             password: this.password,
+            username: this.username,
             rePassword: this.rePassword,
         };
     },
@@ -71,13 +83,26 @@ export default {
     },
     methods: {
         async register() {
-            const user = {
-                email: this.email,
-                password: bcrypt.hashSync(this.password, 8),
-            }
-            let test = await axios.post(`https://httpbin.org/post`, { user })
-            console.log(test)
+            if (this.password && this.password === this.rePassword) {
+                const user = {
+                    email: this.email,
+                    name: this.name,
+                    password: this.password,
+                    username: this.username,
+                };
 
+                let test = await axios.post(
+                    `https://zuko.r4ck.tech/api/auth/signup`,
+                    user
+                );
+                if (test.status = 200) {
+                    this.navigation.navigate('Login');
+                } else {
+                    alert(test.data.message);
+                }
+            } else {
+                alert("beide Passwörter müssen übereinstimmen");
+            }
         },
         terms() {
             this.navigation.navigate("QrCode");
