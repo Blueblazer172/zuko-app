@@ -10,8 +10,9 @@ import {
 } from "vue-native-router";
 import { enableScreens } from "react-native-screens";
 import Vue from "vue-native-core";
-import { VueNativeBase } from "native-base";
+import { Drawer, VueNativeBase } from "native-base";
 import * as Font from "expo-font";
+import SidebarScreen from "./src/screens/SidebarScreen.vue";
 import HomeScreen from "./src/screens/HomeScreen.vue";
 import QrCodeScreen from "./src/screens/QrCodeScreen.vue";
 import LoginScreen from "./src/screens/LoginScreen.vue";
@@ -23,18 +24,37 @@ Vue.use(VueNativeBase);
 
 const DrawerNavigator = createDrawerNavigator(
     {
-        Home: HomeScreen,
-        Login: LoginScreen,
-        Register: RegisterScreen,
-        QrCode: QrCodeScreen,
-        History: HistoryScreen,
+        Home: { screen: HomeScreen },
+        Login: { screen: LoginScreen},
+        Register: { screen: RegisterScreen},
+        QrCode: { screen: QrCodeScreen},
+        History: { screen: HistoryScreen},
     },
     {
         initialRouteName: "Home",
+        contentOptions: {
+      activeTintColor: "#e91e63"
+    },
+    contentComponent: SidebarScreen
     }
 );
 
-const AppNavigator = createAppContainer(DrawerNavigator);
+const AppNavigator = createAppContainer(
+    createStackNavigator(
+        {
+            Drawer: { screen: DrawerNavigator },
+            Home: { screen: HomeScreen },
+            Login: { screen: LoginScreen},
+            Register: { screen: RegisterScreen},
+            QrCode: { screen: QrCodeScreen},
+            History: { screen: HistoryScreen},  
+        },
+        {
+      initialRouteName: "Drawer",
+      headerMode: "none"
+    }
+    )
+);
 
 export default {
     name: "App",
