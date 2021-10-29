@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "zuko-app",
+    "name": "Zuko-app",
     "slug": "zuko-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.oppani.zukoapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,6 +38,8 @@
         "tsx",
         "vue"
       ]
-    }
+    },
+    "description": "Project for Advanced-Programming",
+    "githubUrl": "https://github.com/Blueblazer172/zuko-app"
   }
 }

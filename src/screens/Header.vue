@@ -1,5 +1,5 @@
 <template>
-    <nb-header>
+    <nb-header iosBarStyle="dark-content" androidStatusBarColor="black">
         <nb-left>
             <nb-button
                 transparent
