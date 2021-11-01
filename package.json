@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@expo/ngrok": "^2.5.0",
+    "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/core": "^6.1.0",
     "@react-navigation/drawer": "^6.1.8",
@@ -37,13 +38,13 @@
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
+    "start-android-emulator": "^1.1.0",
     "styled-components": "^5.3.3",
     "styled-system": "^5.1.5",
     "vue-native-core": "^0.3.1",
     "vue-native-helper": "^0.3.1",
     "vue-native-router": "^0.2.1",
-    "vuex": "^3.6.2",
-    "@react-native-async-storage/async-storage": "~1.15.0"
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

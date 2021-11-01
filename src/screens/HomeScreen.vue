@@ -1,7 +1,10 @@
 <template>
     <nb-container>
         <image-background :source="homeBg" class="imageContainer">
-            <View :style="{ flex: 2 }"></View>
+            <header-template
+                v-bind:navigation="this.props.navigation"
+            ></header-template>
+            <View :style="{ flex: 1 }"></View>
             <View :style="{ flex: 1 }">
                 <view class="text-container">
                     <nb-text class="text-welcome">Zuko-App</nb-text>
@@ -30,7 +33,11 @@
                         margin: 5,
                     }"
                 >
-                    <Button mode="outlined" :style="{width: 200}" :onPress="() => this.props.navigation.openDrawer()">
+                    <Button
+                        mode="outlined"
+                        :style="{ width: 200 }"
+                        :onPress="() => this.props.navigation.openDrawer()"
+                    >
                         <text class="text-color-white">Getting Started</text>
                     </Button>
                 </View>
@@ -41,7 +48,11 @@
                         margin: 5,
                     }"
                 >
-                    <Button mode="outlined" :style="{width: 200}" :onPress="() => this.props.navigation.navigate('Login')">
+                    <Button
+                        mode="outlined"
+                        :style="{ width: 200 }"
+                        :onPress="() => this.props.navigation.navigate('Login')"
+                    >
                         <text class="text-color-white">Sign In</text>
                     </Button>
                 </View>
@@ -52,7 +63,13 @@
                         margin: 5,
                     }"
                 >
-                    <Button mode="outlined" :style="{width: 200}" :onPress="() => this.props.navigation.navigate('Register')">
+                    <Button
+                        mode="outlined"
+                        :style="{ width: 200 }"
+                        :onPress="
+                            () => this.props.navigation.navigate('Register')
+                        "
+                    >
                         <text class="text-color-white">Sign Up</text>
                     </Button>
                 </View>

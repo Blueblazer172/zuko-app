@@ -1,9 +1,9 @@
 <template>
     <nb-container>
-        <header-template
-            v-bind:navigation="this.props.navigation"
-        ></header-template>
-        <image-background :source="homeBg" class="imageContainer">
+        <image-background :source="defaultBg" class="imageContainer">
+            <header-template
+                v-bind:navigation="this.props.navigation"
+            ></header-template>
             <View :style="{ flex: 1 }">
                 <view class="text-container">
                     <nb-h1 class="text-color-white">QrCodeScanner</nb-h1>
@@ -13,16 +13,26 @@
                     >
                 </view>
             </View>
-            <View :style="{ flex: 1 }">
-                <view class="button-container">
-                    <button :on-press="toggleCam" title="toggleCam"></button>
-                    <button :on-press="resetData" title="resetData"></button>
-                    <nb-h3 class="text-color-white"
-                        >Qr-Code data: {{ BarcodeData }}</nb-h3
-                    >
-                </view>
-            </View>
+            <View :style="{ flex: 1 }"></View>
             <View :style="{ flex: 3 }">
+                <View
+                    :style="{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        margin: 5,
+                    }"
+                >
+                    <Button
+                        mode="outlined"
+                        :style="{ width: 200 }"
+                        :onPress="toggleCam"
+                    >
+                        <text class="text-color-black">toggleCam</text>
+                    </Button>
+                </View>
+            </View>
+            <View :style="{ flex: 1 }"></View>
+            <View :style="{ flex: 7 }">
                 <bar-code-scanner
                     v-if="showCam"
                     :onBarCodeScanned="handleBarCodeScanned"
@@ -35,6 +45,24 @@
                         bottom: 15,
                     }"
                 />
+                <view :style="{ alignItems: 'center' }" v-else>
+                    <view v-if="BarcodeData">
+                        <text :style="{ fontSize: 25 }"
+                            >QrCode-Data: {{ BarcodeData }}</text
+                        >
+                        <view v-if="userData.username">
+                            <Button
+                                mode="outlined"
+                                :style="{ width: 200 }"
+                                :onPress="askPermission"
+                            >
+                                <text class="text-color-black"
+                                    >Access-Room</text
+                                >
+                            </Button>
+                        </view>
+                    </view>
+                </view>
             </View>
         </image-background>
     </nb-container>
@@ -42,19 +70,21 @@
 
 <script>
 import HeaderTemplate from "./Header.vue";
-import homeBg from "../../assets/background.png";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import defaultBg from "../../assets/default-background.png";
+import { Button } from "react-native-paper";
 import { StyleSheet } from "react-native";
-import { View } from "react-native";
+import axios from "react-native-axios";
+import store from "../../store";
 export default {
     name: "QrCodeScreen",
-    components: { HeaderTemplate, BarCodeScanner, View },
+    components: { HeaderTemplate, BarCodeScanner, Button },
     data() {
         return {
             StyleSheet: StyleSheet,
-            homeBg,
+            defaultBg,
             BarCodeScanner: BarCodeScanner,
             BarcodeData: "",
             showCam: false,
@@ -63,21 +93,31 @@ export default {
     mounted() {
         Camera.requestCameraPermissionsAsync();
     },
+    computed: {
+        userData() {
+            return store.state.userObj;
+        },
+    },
     props: {
         navigation: {
             type: Object,
         },
     },
     methods: {
-        handleBarCodeScanned(e) {
+        async handleBarCodeScanned(e) {
             this.BarcodeData = e.data;
+            this.showCam = false;
+        },
+        async askPermission() {
+            const qrData = {
+                data: this.BarcodeData,
+            };
+            let test = await axios.post(`http://httpbin.org/post`, qrData);
+            console.log(test);
         },
         toggleCam() {
             this.showCam = !this.showCam;
-        },
-        resetData() {
             this.BarcodeData = "";
-            this.showCam = false;
         },
     },
 };
@@ -106,5 +146,8 @@ export default {
 }
 .camera-container {
     flex: 1;
+}
+.text-color-black {
+    color: black;
 }
 </style>

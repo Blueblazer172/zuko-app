@@ -10,6 +10,9 @@
                 <nb-h3 class="text-color-white"
                     >soon your access course will be displayed here</nb-h3
                 >
+                <nb-text class="text-color-white"
+                    >Username: {{ userData.username }}</nb-text
+                >
             </view>
             <view :style="{ marginBottom: 80 }"> </view>
         </image-background>
@@ -20,13 +23,8 @@
 import HeaderTemplate from "./Header.vue";
 import homeBg from "../../assets/background.png";
 import axios from "react-native-axios";
-import store from '../../store';
-import { NavigationActions, StackActions } from 'vue-native-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-const resetAction = StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainActivity' })],
-        });
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import store from "../../store";
 // @TODO fix navigation after logout
 export default {
     name: "HistoryScreen",
@@ -40,6 +38,11 @@ export default {
     props: {
         navigation: {
             type: Object,
+        },
+    },
+    computed: {
+        userData() {
+            return store.state.userObj;
         },
     },
 };
