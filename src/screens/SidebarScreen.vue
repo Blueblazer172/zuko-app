@@ -1,27 +1,44 @@
 <template>
     <nb-container>
-        <nb-list>
-            <nb-list-item>
-                <text>Muss noch gefixxt werden @TODO</text>
-            </nb-list-item>
-            <nb-list-item v-if="userData.username">
+        <nb-header transparent v-if="userData.username">
                 <nb-left>
                     <image
                         :style="{ width: 20, height: 30, marginRight: 10 }"
                         :source="LoginIcon"
                     />
-                    <nb-text class="text-bold">{{ userData.username }}</nb-text>
                 </nb-left>
+                <nb-body>
+                    <text class="text-bold">{{userData.username}}</text>
+                </nb-body>
                 <nb-right>
                     <Button
                         mode="outlined"
                         :style="{ width: 100 }"
                         :onPress="logout"
                     >
-                        <text class="text-color-black">Logout</text>
+                       <text class="text-color-black">Logout</text> 
                     </Button>
-                </nb-right>
-            </nb-list-item>
+                </nb-right>         
+        </nb-header>
+        <nb-header transparent v-else>
+            <nb-left>
+                <image
+                            :style="{ width: 20, height: 30, marginRight: 10 }"
+                            :source="LoginIcon"
+                 />
+            </nb-left>
+            <nb-body></nb-body>
+            <nb-right>
+            <Button
+                mode="outlined"
+                :style="{ width: 100 }"
+                :onPress="() => this.props.navigation.navigate('Login')"
+            >
+                <text class="text-color-black">login</text> 
+            </Button>
+            </nb-right>
+        </nb-header>
+        <nb-list>
             <nb-list-item
                 v-for="data in datas"
                 :key="data.route"
@@ -36,12 +53,13 @@
 </template>
 
 <script>
+import HeaderTemplate from "./Header.vue";
 import { NavigationActions, StackActions } from "vue-native-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import store from "../../store";
 import LoginIcon from "../../assets/Login-Icon.png";
 import { Button } from "react-native-paper";
-
+import Logo from "../../assets/icon.png";
 const resetAction = StackActions.reset({
     index: 0,
     key: null,
@@ -55,10 +73,12 @@ export default {
     },
     components: {
         Button,
+        HeaderTemplate,
     },
     data() {
         return {
             LoginIcon,
+            Logo,
             login: false,
             datas: [
                 {
@@ -76,10 +96,6 @@ export default {
                 {
                     name: "History",
                     route: "History",
-                },
-                {
-                    name: "Login",
-                    route: "Login",
                 },
             ],
         };

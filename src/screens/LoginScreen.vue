@@ -128,9 +128,8 @@ export default {
                     user
                 );
                 if ((test.status = 200)) {
-                    console.log(test.data.username);
                     store.dispatch("LOGIN", {
-                        userObj: { username: test.data.username },
+                        userObj: { username: test.data.username, jwt: test.data.accessToken },
                         navigate: this.navigation.navigate,
                     });
                 } else {

@@ -6,6 +6,7 @@ export function LOGIN ({ commit, state}, {userObj, navigate}) {
       setTimeout(() => {
         commit('LOGIN_SUCCESFULL', {userObj})
         AsyncStorage.setItem('username', userObj.username)
+        AsyncStorage.setItem('jwt', userObj.jwt)
         navigate('Home');
         resolve();
       }, 1000)
@@ -18,6 +19,7 @@ export function LOGIN ({ commit, state}, {userObj, navigate}) {
   
   export function LOGOUT ({ commit, state}, callback) {
     return new Promise((resolve, reject) => {
+        AsyncStorage.removeItem('jwt')
         AsyncStorage.removeItem('username').then(() => {
           callback();
           resolve();

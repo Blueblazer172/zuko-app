@@ -78,6 +78,7 @@ import { Button } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import axios from "react-native-axios";
 import store from "../../store";
+
 export default {
     name: "QrCodeScreen",
     components: { HeaderTemplate, BarCodeScanner, Button },
@@ -86,7 +87,7 @@ export default {
             StyleSheet: StyleSheet,
             defaultBg,
             BarCodeScanner: BarCodeScanner,
-            BarcodeData: "",
+            BarcodeData: {},
             showCam: false,
         };
     },
@@ -105,15 +106,23 @@ export default {
     },
     methods: {
         async handleBarCodeScanned(e) {
-            this.BarcodeData = e.data;
+            try{
+                this.BarcodeData = JSON.parse(e.data);
+            }
+            catch{
+            }
             this.showCam = false;
         },
         async askPermission() {
-            const qrData = {
-                data: this.BarcodeData,
-            };
-            let test = await axios.post(`http://httpbin.org/post`, qrData);
-            console.log(test);
+            let test = await axios({
+                method: 'post',
+                headers: {'x-access-token': store.state.userObj.jwt},
+                url: 'https://httpbin.org/post',
+                data: {
+                    room: this.BarcodeData.room,
+                }
+            })
+            console.log(test)
         },
         toggleCam() {
             this.showCam = !this.showCam;
