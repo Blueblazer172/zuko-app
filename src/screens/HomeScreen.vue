@@ -26,52 +26,88 @@
             </View>
             <View :style="{ flex: 5 }"></View>
             <View :style="{ flex: 10 }">
-                <View
-                    :style="{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        margin: 5,
-                    }"
-                >
-                    <Button
-                        mode="outlined"
-                        :style="{ width: 200 }"
-                        :onPress="() => this.props.navigation.openDrawer()"
+                <View v-if="userData.username">
+                    <View
+                        :style="{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            margin: 5,
+                        }"
                     >
-                        <text class="text-color-white">Getting Started</text>
-                    </Button>
+                        <Button
+                            mode="outlined"
+                            :style="{ width: 200 }"
+                            :onPress="() => this.props.navigation.openDrawer()"
+                        >
+                            <text class="text-color-white">Open Drawer</text>
+                        </Button>
+                    </View>
+                    <View
+                        :style="{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            margin: 5,
+                        }"
+                    >
+                        <Button
+                            mode="outlined"
+                            :style="{ width: 200 }"
+                            :onPress="() => this.props.navigation.navigate('QrCode')"
+                        >
+                            <text class="text-color-white">Scan your code</text>
+                        </Button>
+                    </View>
+                    <View
+                        :style="{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            margin: 5,
+                        }"
+                    >
+                        <Button
+                            mode="outlined"
+                            :style="{ width: 200 }"
+                            :onPress="
+                                () => this.props.navigation.navigate('History')
+                            "
+                        >
+                            <text class="text-color-white">View your Logs</text>
+                        </Button>
+                    </View>
                 </View>
-                <View
-                    :style="{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        margin: 5,
-                    }"
-                >
-                    <Button
-                        mode="outlined"
-                        :style="{ width: 200 }"
-                        :onPress="() => this.props.navigation.navigate('Login')"
+                <View v-else>
+                    <View
+                        :style="{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            margin: 5,
+                        }"
                     >
-                        <text class="text-color-white">Sign In</text>
-                    </Button>
-                </View>
-                <View
-                    :style="{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        margin: 5,
-                    }"
-                >
-                    <Button
-                        mode="outlined"
-                        :style="{ width: 200 }"
-                        :onPress="
-                            () => this.props.navigation.navigate('Register')
-                        "
+                        <Button
+                            mode="outlined"
+                            :style="{ width: 200 }"
+                            :onPress="() => this.props.navigation.navigate('Login')"
+                        >
+                            <text class="text-color-white">Sign In</text>
+                        </Button>
+                    </View>
+                    <View
+                        :style="{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            margin: 5,
+                        }"
                     >
-                        <text class="text-color-white">Sign Up</text>
-                    </Button>
+                        <Button
+                            mode="outlined"
+                            :style="{ width: 200 }"
+                            :onPress="
+                                () => this.props.navigation.navigate('Register')
+                            "
+                        >
+                            <text class="text-color-white">Sign Up</text>
+                        </Button>
+                    </View>
                 </View>
             </View>
         </image-background>
@@ -83,6 +119,8 @@ import HeaderTemplate from "./Header.vue";
 import homeBg from "../../assets/home-background.png";
 import Logo from "../../assets/icon.png";
 import { Button } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import store from "../../store";
 export default {
     name: "HomeScreen",
     components: { HeaderTemplate, Button },
@@ -100,6 +138,27 @@ export default {
     methods: {
         openDrawer() {},
     },
+    computed: {
+        logging_in() {
+            return store.state.logging_in;
+        },
+        userData() {
+            return store.state.userObj;
+        },
+    },
+    async created() {
+        let jwt = await AsyncStorage.getItem("jwt")
+        let userid = await AsyncStorage.getItem("userid")
+        AsyncStorage.getItem("username").then((val) => {
+            if (val) {
+                this.loaded = true;
+                this.navigation.navigate("Home");
+                store.dispatch("SET_USER", { userObj: { username: val, jwt:jwt, userid:userid} });
+            } else {
+                this.loaded = true;
+            }
+        })
+    }
 };
 </script>
 

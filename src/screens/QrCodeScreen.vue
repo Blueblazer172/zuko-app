@@ -60,6 +60,24 @@
                                     >Access-Room</text
                                 >
                             </Button>
+                            <Button
+                                mode="outlined"
+                                :style="{ width: 200 }"
+                                :onPress="relaisOn"
+                            >
+                                <text class="text-color-black"
+                                    >relaisOn</text
+                                >
+                            </Button>
+                            <Button
+                                mode="outlined"
+                                :style="{ width: 200 }"
+                                :onPress="relaisOff"
+                            >
+                                <text class="text-color-black"
+                                    >relaisOff</text
+                                >
+                            </Button>
                         </view>
                     </view>
                 </view>
@@ -87,7 +105,7 @@ export default {
             StyleSheet: StyleSheet,
             defaultBg,
             BarCodeScanner: BarCodeScanner,
-            BarcodeData: {},
+            BarcodeData: null,
             showCam: false,
         };
     },
@@ -114,20 +132,46 @@ export default {
             this.showCam = false;
         },
         async askPermission() {
-            let test = await axios({
+            let perm = await axios({
                 method: 'post',
                 headers: {'x-access-token': store.state.userObj.jwt},
                 url: 'https://httpbin.org/post',
                 data: {
                     room: this.BarcodeData.room,
                 }
-            })
-            console.log(test)
+            }).catch(function (error) {
+                if (error.response) {
+                    // Request made and server responded
+                    console.log(error.response.status);
+                    console.log(error.response.data);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log("Error", error.message);
+                }
+            });
+            console.log(perm)
         },
         toggleCam() {
             this.showCam = !this.showCam;
             this.BarcodeData = "";
         },
+        async relaisOn(){
+            let test = await axios({
+                method: 'get',
+                url: 'http://192.168.178.89:4444/relay_on',
+            })
+            console.log(test)
+        },
+        async relaisOff(){
+            let test = await axios({
+                method: 'get',
+                url: 'http://192.168.178.89:4444/relay_off',
+            })
+            console.log(test)
+        }
     },
 };
 </script>

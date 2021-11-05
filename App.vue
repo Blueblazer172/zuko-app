@@ -19,6 +19,7 @@ import LoginScreen from "./src/screens/LoginScreen.vue";
 import RegisterScreen from "./src/screens/RegisterScreen.vue";
 import HistoryScreen from "./src/screens/HistoryScreen.vue";
 import HeaderTemplate from "./src/screens/Header.vue";
+import UserScreen from "./src/screens/UserScreen.vue";
 enableScreens(false);
 Vue.use(VueNativeBase);
 
@@ -29,6 +30,7 @@ const DrawerNavigator = createDrawerNavigator(
         Register: { screen: RegisterScreen},
         QrCode: { screen: QrCodeScreen},
         History: { screen: HistoryScreen},
+        UserScreen: { screen: UserScreen}
     },
     {
         initialRouteName: "Home",
@@ -47,7 +49,8 @@ const AppNavigator = createAppContainer(
             Login: { screen: LoginScreen},
             Register: { screen: RegisterScreen},
             QrCode: { screen: QrCodeScreen},
-            History: { screen: HistoryScreen},  
+            History: { screen: HistoryScreen},
+            UserScreen: { screen: UserScreen} 
         },
         {
       initialRouteName: "Drawer",

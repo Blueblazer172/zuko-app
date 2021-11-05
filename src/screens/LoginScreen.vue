@@ -74,13 +74,13 @@
 </template>
 
 <script>
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import HeaderTemplate from "./Header.vue";
-import axios from "react-native-axios";
-import { Button, TextInput } from "react-native-paper";
-import store from "../../store";
 import defaultBg from "../../assets/default-background.png";
 import LoginIcon from "../../assets/Login-Icon.png";
+import { Button, TextInput } from "react-native-paper";
+import axios from "react-native-axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import store from "../../store";
 
 export default {
     name: "Login",
@@ -100,16 +100,18 @@ export default {
             return store.state.logging_in;
         },
     },
-    created() {
+    async created() {
+        let jwt = await AsyncStorage.getItem("jwt")
+        let userid = await AsyncStorage.getItem("userid")
         AsyncStorage.getItem("username").then((val) => {
             if (val) {
                 this.loaded = true;
                 this.navigation.navigate("Home");
-                store.dispatch("SET_USER", { userObj: { username: val } });
+                store.dispatch("SET_USER", { userObj: { username: val, jwt:jwt, userid:userid} });
             } else {
                 this.loaded = true;
             }
-        });
+        })
     },
     props: {
         navigation: {
@@ -119,23 +121,40 @@ export default {
     methods: {
         async signIn() {
             if (this.username && this.password) {
-                const user = {
-                    password: this.password,
-                    username: this.username,
-                };
-                let test = await axios.post(
-                    `https://zuko.r4ck.tech/api/auth/signin`,
-                    user
-                );
-                if ((test.status = 200)) {
+                let login = await axios({
+                     method: "post",
+                     url: "https://zuko.r4ck.tech/api/auth/signin",
+                     data: {
+                        password: this.password,
+                        username: this.username,
+                        },
+                }).catch(function (error) {
+                if (error.response) {
+                    // Request made and server responded
+                    console.log(error.response.status);
+                    console.log(error.response.data);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log("Error", error.message);
+                }
+                });
+                if ((login.status = 200)) {
                     store.dispatch("LOGIN", {
-                        userObj: { username: test.data.username, jwt: test.data.accessToken },
+                        userObj: { 
+                            username: login.data.username,
+                            jwt: login.data.accessToken,
+                            userid: login.data.id.toString()  
+                        },
                         navigate: this.navigation.navigate,
                     });
                 } else {
-                    alert(test.data.message);
+                    alert(login.data.message);
                 }
-            } else {
+            } 
+            else {
                 alert("Supply username and password");
             }
         },

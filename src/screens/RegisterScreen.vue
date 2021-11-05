@@ -113,15 +113,27 @@ export default {
                     password: this.password,
                     username: this.username,
                 };
-
-                let test = await axios.post(
-                    `https://zuko.r4ck.tech/api/auth/signup`,
-                    user
-                );
-                if (test.status = 200) {
+                let register = await axios({
+                     method: "post",
+                     url: "https://zuko.r4ck.tech/api/auth/signup",
+                     data: user
+                }).catch(function (error) {
+                if (error.response) {
+                    // Request made and server responded
+                    console.log(error.response.status);
+                    console.log(error.response.data);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log("Error", error.message);
+                }
+                });
+                if (register.status = 200) {
                     this.navigation.navigate('Login');
                 } else {
-                    alert(test.data.message);
+                    alert(register.data.message);
                 }
             } else {
                 alert("beide Passwörter müssen übereinstimmen");
