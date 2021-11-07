@@ -1,110 +1,45 @@
 <template>
     <nb-container>
         <image-background :source="homeBg" class="imageContainer">
-            <header-template
-                v-bind:navigation="this.props.navigation"
-            ></header-template>
+            <header-template v-bind:navigation="this.props.navigation"></header-template>
             <View :style="{ flex: 1 }"></View>
             <View :style="{ flex: 1 }">
                 <view class="text-container">
                     <nb-text class="text-welcome">Zuko-App</nb-text>
                 </view>
             </View>
-            <View
-                :style="{
-                    flex: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }"
-            >
+            <View :style="{flex: 10, justifyContent: 'center', alignItems: 'center'}">
                 <view class="logo-container">
-                    <image
-                        :style="{ width: 150, height: 150 }"
-                        :source="Logo"
-                    />
+                    <image :style="{ width: 150, height: 150 }" :source="Logo"/>
                 </view>
             </View>
             <View :style="{ flex: 5 }"></View>
             <View :style="{ flex: 10 }">
                 <View v-if="userData.username">
-                    <View
-                        :style="{
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            margin: 5,
-                        }"
-                    >
-                        <Button
-                            mode="outlined"
-                            :style="{ width: 200 }"
-                            :onPress="() => this.props.navigation.openDrawer()"
-                        >
+                    <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                        <Button mode="outlined" :style="{ width: 200 }" :onPress="() => this.props.navigation.openDrawer()">
                             <text class="text-color-white">Open Drawer</text>
                         </Button>
                     </View>
-                    <View
-                        :style="{
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            margin: 5,
-                        }"
-                    >
-                        <Button
-                            mode="outlined"
-                            :style="{ width: 200 }"
-                            :onPress="() => this.props.navigation.navigate('QrCode')"
-                        >
+                    <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                        <Button mode="outlined" :style="{ width: 200 }" :onPress="() => this.props.navigation.navigate('QrCode')">
                             <text class="text-color-white">Scan your code</text>
                         </Button>
                     </View>
-                    <View
-                        :style="{
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            margin: 5,
-                        }"
-                    >
-                        <Button
-                            mode="outlined"
-                            :style="{ width: 200 }"
-                            :onPress="
-                                () => this.props.navigation.navigate('History')
-                            "
-                        >
+                    <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                        <Button mode="outlined" :style="{ width: 200 }" :onPress="() => this.props.navigation.navigate('History')">
                             <text class="text-color-white">View your Logs</text>
                         </Button>
                     </View>
                 </View>
                 <View v-else>
-                    <View
-                        :style="{
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            margin: 5,
-                        }"
-                    >
-                        <Button
-                            mode="outlined"
-                            :style="{ width: 200 }"
-                            :onPress="() => this.props.navigation.navigate('Login')"
-                        >
+                    <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                        <Button mode="outlined" :style="{ width: 200 }" :onPress="() => this.props.navigation.navigate('Login')">
                             <text class="text-color-white">Sign In</text>
                         </Button>
                     </View>
-                    <View
-                        :style="{
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            margin: 5,
-                        }"
-                    >
-                        <Button
-                            mode="outlined"
-                            :style="{ width: 200 }"
-                            :onPress="
-                                () => this.props.navigation.navigate('Register')
-                            "
-                        >
+                    <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                        <Button mode="outlined" :style="{ width: 200 }" :onPress="() => this.props.navigation.navigate('Register')">
                             <text class="text-color-white">Sign Up</text>
                         </Button>
                     </View>
@@ -118,25 +53,28 @@
 import HeaderTemplate from "./Header.vue";
 import homeBg from "../../assets/home-background.png";
 import Logo from "../../assets/icon.png";
-import { Button } from "react-native-paper";
+import {Button} from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import store from "../../store";
+
 export default {
     name: "HomeScreen",
-    components: { HeaderTemplate, Button },
+    components: {HeaderTemplate, Button},
     data() {
         return {
             homeBg,
-            Logo,
-        };
+            Logo
+        }
     },
     props: {
         navigation: {
-            type: Object,
-        },
+            type: Object
+        }
     },
     methods: {
-        openDrawer() {},
+        openDrawer() {
+            // @TODO ?
+        }
     },
     computed: {
         logging_in() {
@@ -144,7 +82,7 @@ export default {
         },
         userData() {
             return store.state.userObj;
-        },
+        }
     },
     async created() {
         let jwt = await AsyncStorage.getItem("jwt")
@@ -167,25 +105,31 @@ export default {
     font-size: 50;
     font-weight: bold;
 }
+
 .imageContainer {
     flex: 1;
 }
+
 .text-color-primary {
     color: blue;
     font-family: Roboto;
 }
+
 .logoContainer {
     align-self: center;
     align-items: center;
 }
+
 .text-container {
     align-items: center;
     margin-bottom: 50;
     background-color: transparent;
 }
+
 .text-color-white {
     color: white;
 }
+
 .button-container {
     width: "50%";
 }

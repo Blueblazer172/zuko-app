@@ -2,27 +2,20 @@
     <nb-container>
         <nb-header transparent v-if="userData.username">
             <nb-left>
-                <image
-                    :style="{ width: 20, height: 30, marginRight: 10 }"
-                    :source="LoginIcon"
-                />
+                <image :style="{ width: 20, height: 30, marginRight: 10 }" :source="LoginIcon" />
             </nb-left>
             <nb-body>
                 <text class="text-bold">{{ userData.username }}</text>
             </nb-body>
             <nb-right>
-                <Button
-                    mode="outlined"
-                    :style="{ width: 100 }"
-                    :onPress="logout"
-                >
+                <Button mode="outlined" :style="{ width: 100 }" :onPress="logout">
                     <text class="text-color-black">Logout</text>
                 </Button>
             </nb-right>
         </nb-header>
         <nb-header transparent v-else>
             <nb-left>
-               <Button
+                <Button
                     mode="outlined"
                     :style="{ width: 120 }"
                     :onPress="() => handleListItemClick({ route: 'Register' })"
@@ -59,22 +52,23 @@
 
 <script>
 import HeaderTemplate from "./Header.vue";
-import { NavigationActions, StackActions } from "vue-native-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {NavigationActions, StackActions} from "vue-native-router";
 import store from "../../store";
 import LoginIcon from "../../assets/Login-Icon.png";
-import { Button } from "react-native-paper";
+import {Button} from "react-native-paper";
 import Logo from "../../assets/icon.png";
+
 const resetAction = StackActions.reset({
     index: 0,
     key: null,
-    actions: [NavigationActions.navigate({ routeName: "Drawer" })],
+    actions: [NavigationActions.navigate({routeName: "Drawer"})],
 });
+
 export default {
     props: {
         navigation: {
-            type: Object,
-        },
+            type: Object
+        }
     },
     components: {
         Button,
@@ -114,13 +108,13 @@ export default {
         },
         handleListItemClick(dataObj) {
             this.navigation.navigate(dataObj.route);
-        },
+        }
     },
     computed: {
         userData() {
             return store.state.userObj;
-        },
-    },
+        }
+    }
 };
 </script>
 
@@ -129,6 +123,7 @@ export default {
     font-weight: bold;
     font-size: 24;
 }
+
 .text-color-black {
     color: black;
 }
