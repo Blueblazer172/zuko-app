@@ -23,6 +23,7 @@
                         </nb-right>
                     </nb-list-item>
                     <ScrollView>
+                        <text>{{getHistory()}}</text>
                         <nb-list-item v-for="log in logs" :key="log.roomName" button>
                             <nb-left>
                                 <text>{{ log.roomName }}</text>
@@ -58,7 +59,7 @@ export default {
     data() {
         return {
             defaultBg,
-            logs: null
+            logs: null,
         };
     },
     computed: {
@@ -66,38 +67,7 @@ export default {
             return store.state.userObj;
         },
     },
-    async created() {
-        if (store.state.userObj.userid) {
-            let logs = await axios({
-                method: "get",
-                headers: {"x-access-token": store.state.userObj.jwt},
-                url:
-                    "https://zuko.r4ck.tech/api/user/" +
-                    store.state.userObj.userid +
-                    "/log"
-            }).catch(function (error) {
-                if (error.response) {
-                    // Request made and server responded
-                    console.log(error.response.status);
-                    console.log(error.response.data);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log("Error", error.message);
-                }
-            });
-
-            console.log(logs.data)
-
-            if (logs) {
-                if (logs.status === 200) {
-                    this.logs = logs.data
-                }
-            }
-        }
-    },
+    mounted() {},
     props: {
         navigation: {
             type: Object,
@@ -109,6 +79,18 @@ export default {
         },
         formatTime(date) {
             return moment(date).locale('de').format('LTS')
+        },
+        getHistory(){
+            if (store.state.userObj.userid) {
+                return axios({
+                    method: "get",
+                    headers: {"x-access-token": store.state.userObj.jwt},
+                    url:
+                        "https://zuko.r4ck.tech/api/user/" +
+                        store.state.userObj.userid +
+                        "/log"
+                }).then(response => response.data)
+            }
         }
     }
 };

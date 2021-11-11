@@ -87,40 +87,40 @@ export default {
         }
     },
     methods: {
-        async signIn() {
+        signIn() {
             if (this.username && this.password) {
-                let login = await axios({
+                axios({
                     method: "post",
                     url: "https://zuko.r4ck.tech/api/auth/signin",
                     data: {
                         password: this.password,
                         username: this.username,
                     }
-                }).catch(function (error) {
+                })
+                .then((res) =>{
+                    if (res.status === 200) {
+                        store.dispatch("LOGIN", {
+                            userObj: {
+                                username: res.data.username,
+                                jwt: res.data.accessToken,
+                                userid: res.data.id.toString()
+                            },
+                            navigate: this.navigation.navigate,
+                        });
+                    } else {
+                        alert(res.data.message);
+                    }
+                })
+                .catch(function (error) {
                     if (error.response) {
-                        // Request made and server responded
                         console.log(error.response.status);
                         console.log(error.response.data);
                     } else if (error.request) {
-                        // The request was made but no response was received
                         console.log(error.request);
                     } else {
-                        // Something happened in setting up the request that triggered an Error
                         console.log("Error", error.message);
                     }
                 });
-                if (login.status === 200) {
-                    store.dispatch("LOGIN", {
-                        userObj: {
-                            username: login.data.username,
-                            jwt: login.data.accessToken,
-                            userid: login.data.id.toString()
-                        },
-                        navigate: this.navigation.navigate,
-                    });
-                } else {
-                    alert(login.data.message);
-                }
             } else {
                 alert("Supply username and password");
             }

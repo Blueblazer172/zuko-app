@@ -34,16 +34,10 @@
                 />
                 <view :style="{ alignItems: 'center' }" v-else>
                     <view v-if="BarcodeData">
-                        <text :style="{ fontSize: 25 }">QrCode-Data: {{ BarcodeData }}</text>
+                        <text :style="{ fontSize: 25 }">Room: {{ BarcodeData.room }}</text>
                         <view v-if="userData.username">
-                            <Button mode="outlined" :style="{ width: 200 }" :onPress="askPermission">
+                            <Button mode="outlined" :style="{ width: 200, margin: 15 }" :onPress="askPermission">
                                 <text class="text-color-black">Access-Room</text>
-                            </Button>
-                            <Button mode="outlined" :style="{ width: 200 }" :onPress="relaisOn">
-                                <text class="text-color-black">relaisOn</text>
-                            </Button>
-                            <Button mode="outlined" :style="{ width: 200 }" :onPress="relaisOff">
-                                <text class="text-color-black">relaisOff</text>
                             </Button>
                         </view>
                     </view>
@@ -96,15 +90,20 @@ export default {
             }
             this.showCam = false;
         },
-        async askPermission() {
-            let perm = await axios({
+        askPermission() {
+            axios({
                 method: 'post',
                 headers: {'x-access-token': store.state.userObj.jwt},
-                url: 'https://httpbin.org/post',
+                url: 'https://zuko.r4ck.tech/api/permission/',
                 data: {
+                    id: store.state.userObj.userid,
                     room: this.BarcodeData.room
                 }
-            }).catch(function (error) {
+            })
+            .then((res) =>{
+                alert(res.data)
+            })
+            .catch(function (error) {
                 if (error.response) {
                     // Request made and server responded
                     console.log(error.response.status);
@@ -116,27 +115,12 @@ export default {
                     // Something happened in setting up the request that triggered an Error
                     console.log("Error", error.message);
                 }
-            });
-            console.log(perm)
+            });        
         },
         toggleCam() {
             this.showCam = !this.showCam;
             this.BarcodeData = "";
         },
-        async relaisOn() {
-            let test = await axios({
-                method: 'get',
-                url: 'http://192.168.178.89:4444/relay_on',
-            })
-            console.log(test)
-        },
-        async relaisOff() {
-            let test = await axios({
-                method: 'get',
-                url: 'http://192.168.178.89:4444/relay_off',
-            })
-            console.log(test)
-        }
     },
 };
 </script>
