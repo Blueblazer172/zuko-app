@@ -80,7 +80,7 @@ export default {
 
                 let register = await axios({
                     method: "post",
-                    url: "https://zuko.r4ck.tech/api/auth/signup",
+                    url: this.$api_url + "api/auth/signup",
                     data: user
                 }).catch(function (error) {
                     if (error.response) {

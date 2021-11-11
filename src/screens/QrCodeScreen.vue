@@ -94,7 +94,7 @@ export default {
             axios({
                 method: 'post',
                 headers: {'x-access-token': store.state.userObj.jwt},
-                url: 'https://zuko.r4ck.tech/api/permission/',
+                url: this.$api_url +'api/permission/',
                 data: {
                     id: store.state.userObj.userid,
                     room: this.BarcodeData.room
