@@ -17,29 +17,34 @@
             <View :style="{ flex: 10 }">
                 <View v-if="userData.username">
                     <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
-                        <Button mode="outlined" :style="{ width: 200 }" :onPress="() => this.props.navigation.openDrawer()">
+                        <Button mode="outlined" :style="{ width: 200 }"
+                                :onPress="() => this.props.navigation.openDrawer()">
                             <text class="text-color-white">Open Drawer</text>
                         </Button>
                     </View>
                     <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
-                        <Button mode="outlined" :style="{ width: 200 }" :onPress="() => this.props.navigation.navigate('QrCode')">
+                        <Button mode="outlined" :style="{ width: 200 }"
+                                :onPress="() => this.props.navigation.navigate('QrCode')">
                             <text class="text-color-white">Scan your code</text>
                         </Button>
                     </View>
                     <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
-                        <Button mode="outlined" :style="{ width: 200 }" :onPress="() => this.props.navigation.navigate('History')">
+                        <Button mode="outlined" :style="{ width: 200 }"
+                                :onPress="() => this.props.navigation.navigate('History')">
                             <text class="text-color-white">View your Logs</text>
                         </Button>
                     </View>
                 </View>
                 <View v-else>
                     <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
-                        <Button mode="outlined" :style="{ width: 200 }" :onPress="() => this.props.navigation.navigate('Login')">
+                        <Button mode="outlined" :style="{ width: 200 }"
+                                :onPress="() => this.props.navigation.navigate('Login')">
                             <text class="text-color-white">Sign In</text>
                         </Button>
                     </View>
                     <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
-                        <Button mode="outlined" :style="{ width: 200 }" :onPress="() => this.props.navigation.navigate('Register')">
+                        <Button mode="outlined" :style="{ width: 200 }"
+                                :onPress="() => this.props.navigation.navigate('Register')">
                             <text class="text-color-white">Sign Up</text>
                         </Button>
                     </View>
@@ -91,7 +96,7 @@ export default {
             if (val) {
                 this.loaded = true;
                 this.navigation.navigate("Home");
-                store.dispatch("SET_USER", { userObj: { username: val, jwt:jwt, userid:userid} });
+                store.dispatch("SET_USER", {userObj: {username: val, jwt: jwt, userid: userid}});
             } else {
                 this.loaded = true;
             }

@@ -2,7 +2,7 @@
     <nb-container>
         <nb-header transparent v-if="userData.username">
             <nb-left>
-                <image :style="{ width: 20, height: 30, marginRight: 10 }" :source="LoginIcon" />
+                <image :style="{ width: 20, height: 30, marginRight: 10 }" :source="LoginIcon"/>
             </nb-left>
             <nb-body>
                 <text class="text-bold">{{ userData.username }}</text>
@@ -24,7 +24,7 @@
                 </Button>
             </nb-left>
             <nb-body>
-                
+
             </nb-body>
             <nb-right>
                 <Button

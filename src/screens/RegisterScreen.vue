@@ -5,14 +5,15 @@
             <View :style="{ flex: 1}">
                 <view class="text-container">
                     <nb-text class="text-welcome">Sign Up</nb-text>
-                </View>
+                </view>
                 <View :style="{ flex: 1 }"></View>
                 <View :style="{ flex: 7 }">
                     <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
                         <TextInput mode='outlined' label="name" :style="{ width: 200 }" v-model='name'></TextInput>
                     </View>
                     <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
-                        <TextInput mode='outlined' label="username" :style="{ width: 200 }" v-model='username'></TextInput>
+                        <TextInput mode='outlined' label="username" :style="{ width: 200 }"
+                                   v-model='username'></TextInput>
                     </View>
                     <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
                         <TextInput mode='outlined' label="email" :style="{ width: 200 }" v-model='email'></TextInput>

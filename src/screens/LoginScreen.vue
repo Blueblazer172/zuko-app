@@ -1,12 +1,14 @@
 <template>
     <nb-container v-if="loaded">
         <image-background :source="defaultBg" class="imageContainer">
-            <header-template v-bind:navigation="this.props.navigation"></header-template>
+            <header-template
+                v-bind:navigation="this.props.navigation"
+            ></header-template>
             <View :style="{ flex: 4 }">
                 <view class="text-container">
                     <nb-text class="text-welcome">Sign In</nb-text>
                 </view>
-                <View :style="{justifyContent: 'center', alignItems: 'center'}">
+                <View :style="{ justifyContent: 'center', alignItems: 'center' }">
                     <view class="logo-container">
                         <image :style="{ width: 65, height: 100 }" :source="LoginIcon"/>
                     </view>
@@ -14,7 +16,9 @@
             </View>
             <View :style="{ flex: 5 }"></View>
             <View :style="{ flex: 8 }">
-                <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                <View
+                    :style="{ flexDirection: 'row', justifyContent: 'center', margin: 5 }"
+                >
                     <TextInput
                         mode="outlined"
                         label="Username"
@@ -22,7 +26,9 @@
                         v-model="username"
                     ></TextInput>
                 </View>
-                <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                <View
+                    :style="{ flexDirection: 'row', justifyContent: 'center', margin: 5 }"
+                >
                     <TextInput
                         mode="outlined"
                         label="Passwort"
@@ -31,7 +37,9 @@
                         secure-text-entry
                     ></TextInput>
                 </View>
-                <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                <View
+                    :style="{ flexDirection: 'row', justifyContent: 'center', margin: 5 }"
+                >
                     <Button mode="outlined" :style="{ width: 200 }" :onPress="signIn">
                         <text class="text-color-black">Login</text>
                     </Button>
@@ -66,25 +74,27 @@ export default {
     computed: {
         logging_in() {
             return store.state.logging_in;
-        }
+        },
     },
     async created() {
-        let jwt = await AsyncStorage.getItem("jwt")
-        let userid = await AsyncStorage.getItem("userid")
+        let jwt = await AsyncStorage.getItem("jwt");
+        let userid = await AsyncStorage.getItem("userid");
         AsyncStorage.getItem("username").then((val) => {
             if (val) {
                 this.loaded = true;
                 this.navigation.navigate("Home");
-                store.dispatch("SET_USER", { userObj: { username: val, jwt:jwt, userid:userid} });
+                store.dispatch("SET_USER", {
+                    userObj: {username: val, jwt: jwt, userid: userid},
+                });
             } else {
                 this.loaded = true;
             }
-        })
+        });
     },
     props: {
         navigation: {
-            type: Object
-        }
+            type: Object,
+        },
     },
     methods: {
         signIn() {
@@ -95,37 +105,37 @@ export default {
                     data: {
                         password: this.password,
                         username: this.username,
-                    }
+                    },
                 })
-                .then((res) =>{
-                    if (res.status === 200) {
-                        store.dispatch("LOGIN", {
-                            userObj: {
-                                username: res.data.username,
-                                jwt: res.data.accessToken,
-                                userid: res.data.id.toString()
-                            },
-                            navigate: this.navigation.navigate,
-                        });
-                    } else {
-                        alert(res.data.message);
-                    }
-                })
-                .catch(function (error) {
-                    if (error.response) {
-                        console.log(error.response.status);
-                        console.log(error.response.data);
-                    } else if (error.request) {
-                        console.log(error.request);
-                    } else {
-                        console.log("Error", error.message);
-                    }
-                });
+                    .then((res) => {
+                        if (res.status === 200) {
+                            store.dispatch("LOGIN", {
+                                userObj: {
+                                    username: res.data.username,
+                                    jwt: res.data.accessToken,
+                                    userid: res.data.id.toString(),
+                                },
+                                navigate: this.navigation.navigate,
+                            });
+                        } else {
+                            alert(res.data.message);
+                        }
+                    })
+                    .catch(function (error) {
+                        if (error.response) {
+                            console.log(error.response.status);
+                            console.log(error.response.data);
+                        } else if (error.request) {
+                            console.log(error.request);
+                        } else {
+                            console.log("Error", error.message);
+                        }
+                    });
             } else {
                 alert("Supply username and password");
             }
-        }
-    }
+        },
+    },
 };
 </script>
 
