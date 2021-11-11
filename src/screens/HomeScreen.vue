@@ -1,70 +1,141 @@
 <template>
     <nb-container>
-        <status-bar :barStyle="'light-content'"></status-bar>
         <image-background :source="homeBg" class="imageContainer">
-            <view class="text-container"> </view>
-            <view class="text-container">
-                <nb-h3 :style="{ marginBottom: 8 }" class="text-color-white">Zuko-App</nb-h3>
-                <nb-h3 class="text-color-white">Swipe Right to open Sidebar</nb-h3>
-            </view>
-            <view :style="{ marginBottom: 80 }">
-            </view>
+            <header-template v-bind:navigation="this.props.navigation"></header-template>
+            <View :style="{ flex: 1 }"></View>
+            <View :style="{ flex: 1 }">
+                <view class="text-container">
+                    <nb-text class="text-welcome">Zuko-App</nb-text>
+                </view>
+            </View>
+            <View :style="{flex: 10, justifyContent: 'center', alignItems: 'center'}">
+                <view class="logo-container">
+                    <image :style="{ width: 150, height: 150 }" :source="Logo"/>
+                </view>
+            </View>
+            <View :style="{ flex: 5 }"></View>
+            <View :style="{ flex: 10 }">
+                <View v-if="userData.username">
+                    <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                        <Button mode="outlined" :style="{ width: 200 }"
+                                :onPress="() => this.props.navigation.openDrawer()">
+                            <text class="text-color-white">Open Drawer</text>
+                        </Button>
+                    </View>
+                    <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                        <Button mode="outlined" :style="{ width: 200 }"
+                                :onPress="() => this.props.navigation.navigate('QrCode')">
+                            <text class="text-color-white">Scan your code</text>
+                        </Button>
+                    </View>
+                    <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                        <Button mode="outlined" :style="{ width: 200 }"
+                                :onPress="() => this.props.navigation.navigate('History')">
+                            <text class="text-color-white">View your Logs</text>
+                        </Button>
+                    </View>
+                </View>
+                <View v-else>
+                    <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                        <Button mode="outlined" :style="{ width: 200 }"
+                                :onPress="() => this.props.navigation.navigate('Login')">
+                            <text class="text-color-white">Sign In</text>
+                        </Button>
+                    </View>
+                    <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
+                        <Button mode="outlined" :style="{ width: 200 }"
+                                :onPress="() => this.props.navigation.navigate('Register')">
+                            <text class="text-color-white">Sign Up</text>
+                        </Button>
+                    </View>
+                </View>
+            </View>
         </image-background>
     </nb-container>
 </template>
 
 <script>
-import homeBg from "../../assets/background.png";
+import HeaderTemplate from "./Header.vue";
+import homeBg from "../../assets/home-background.png";
+import Logo from "../../assets/icon.png";
+import {Button} from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import store from "../../store";
+
 export default {
     name: "HomeScreen",
+    components: {HeaderTemplate, Button},
     data() {
         return {
             homeBg,
-        };
+            Logo
+        }
     },
     props: {
         navigation: {
-            type: Object,
-        },
+            type: Object
+        }
     },
     methods: {
-        goToQrCode() {
-            this.navigation.navigate("QrCode");
-        },
-        goToLogin() {
-            this.navigation.navigate("Login");
-        },
+        openDrawer() {
+            // @TODO ?
+        }
     },
+    computed: {
+        logging_in() {
+            return store.state.logging_in;
+        },
+        userData() {
+            return store.state.userObj;
+        }
+    },
+    async created() {
+        let jwt = await AsyncStorage.getItem("jwt")
+        let userid = await AsyncStorage.getItem("userid")
+        AsyncStorage.getItem("username").then((val) => {
+            if (val) {
+                this.loaded = true;
+                this.navigation.navigate("Home");
+                store.dispatch("SET_USER", {userObj: {username: val, jwt: jwt, userid: userid}});
+            } else {
+                this.loaded = true;
+            }
+        })
+    }
 };
 </script>
 
 <style>
+.text-welcome {
+    font-size: 50;
+    font-weight: bold;
+}
+
 .imageContainer {
-  flex: 1;
+    flex: 1;
 }
+
 .text-color-primary {
-  color: blue;
-  font-family: Roboto;
+    color: blue;
+    font-family: Roboto;
 }
+
 .logoContainer {
-  flex: 1;
-  margin-bottom: 30;
+    align-self: center;
+    align-items: center;
 }
-.logo {
-  position: absolute;
-  width: 280;
-  height: 100;
-}
+
 .text-container {
-  align-items: center;
-  margin-bottom: 50;
-  background-color: transparent;
+    align-items: center;
+    margin-bottom: 50;
+    background-color: transparent;
 }
+
 .text-color-white {
-  color: white;
+    color: white;
 }
+
 .button-container {
-  background-color: #6faf98;
-  align-self: center;
+    width: "50%";
 }
 </style>
