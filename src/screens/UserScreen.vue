@@ -14,6 +14,9 @@
             <View>
                 <text>Name:{{ userInformation }}</text>
             </View>
+            <View>
+                <text>API:{{ api }}</text>
+            </View>
             <View v-if="menu">
                 <View v-if="!view_Password" :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
                     <Button mode="outlined" :style="{ width: 200 }"
@@ -108,6 +111,7 @@ export default {
             re_password: "",
             email: "",
             userInformation: null,
+            api: this.$api_url,
         }
     },
     computed: {
@@ -133,7 +137,7 @@ export default {
             axios({
                 method: 'get',
                 headers: {'x-access-token': store.state.userObj.jwt},
-                url: 'https://zuko.r4ck.tech/api/user/' + store.state.userObj.userid,
+                url: this.$api_url + 'api/user/' + store.state.userObj.userid,
             })
                 .then((res) => {
                     console.log(res.data)

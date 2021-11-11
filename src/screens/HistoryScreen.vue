@@ -95,7 +95,7 @@ export default {
         },
         async historyData() {
             let url =
-                "https://zuko.r4ck.tech/api/user/" +
+                this.$api_url + "api/user/" +
                 store.state.userObj.userid +
                 "/log";
             const res = await axios.get(url, {

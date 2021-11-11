@@ -101,7 +101,7 @@ export default {
             if (this.username && this.password) {
                 axios({
                     method: "post",
-                    url: "https://zuko.r4ck.tech/api/auth/signin",
+                    url: this.$api_url + "api/auth/signin",
                     data: {
                         password: this.password,
                         username: this.username,

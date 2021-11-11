@@ -19,6 +19,11 @@ import UserScreen from "./src/screens/UserScreen.vue";
 enableScreens(false);
 Vue.use(VueNativeBase);
 
+// change to what ever your backend is running on
+// dont forget the trailing backlash
+Vue.prototype.$api_url = 'https://zuko.r4ck.tech/'
+
+
 const DrawerNavigator = createDrawerNavigator(
     {
         Home: {screen: HomeScreen},
