@@ -10,13 +10,16 @@
                     </Text>
                 </View>
             </View>
+            <View :style="{ flex: 7, marginLeft: 15}"></View>
+            <View v-if="menu">
+                <View v-if="userInformation" :style="{marginLeft: 15}">
+                    <title :style="{ fontSize: 25, textAlignVertical: 'center', textAlign: 'center' , marginBottom:15}">Account:</Title>
+                    <text >Name: {{ userInformation.name }}</text>
+                    <text>Email: {{ userInformation.email }}</text>
+                    <text>username: {{ userInformation.username }}</text>
+                </View>
+            </View>
             <View :style="{ flex: 3 }"></View>
-            <View>
-                <text>Name:{{ userInformation }}</text>
-            </View>
-            <View>
-                <text>API:{{ api }}</text>
-            </View>
             <View v-if="menu">
                 <View v-if="!view_Password" :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
                     <Button mode="outlined" :style="{ width: 200 }"
@@ -29,6 +32,12 @@
                             :onPress="() => {view_Email = !view_Email; menu = !menu}">
                         <text class="text-color-black">change Email</text>
                     </Button>
+                </View>
+                <View v-if="userInformation" :style="{marginLeft: 15}">
+                    <title :style="{ fontSize: 20,textAlignVertical: 'center', textAlign: 'center', marginTop: 10}">
+                        For more go to our website
+                    </Title>
+                    <Title :style="{ fontSize: 15,textAlignVertical: 'center', textAlign: 'center'}">{{api}}</Title>
                 </View>
             </View>
             <View v-if="!menu" :style="{ flex: 10 }"></View>
@@ -52,7 +61,7 @@
                     ></TextInput>
                 </View>
                 <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
-                    <Button mode="outlined" :style="{ width: 200 }" :onPress="changePassword">
+                    <Button mode="outlined" :style="{ width: 200 }" :onPress="updatePassword">
                         <text class="text-color-black">Change Password</text>
                     </Button>
                 </View>
@@ -70,11 +79,11 @@
                 <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
                     <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
                         <TextInput mode='outlined' label="verify email" :style="{ width: 200 }"
-                                   v-model='email'></TextInput>
+                                   v-model='re_email'></TextInput>
                     </View>
                 </View>
                 <View :style="{flexDirection: 'row', justifyContent: 'center', margin: 5}">
-                    <Button mode="outlined" :style="{ width: 200 }" :onPress="changeEmail">
+                    <Button mode="outlined" :style="{ width: 200 }" :onPress="updateMail">
                         <text class="text-color-black">Change Email</text>
                     </Button>
                 </View>
@@ -93,14 +102,14 @@
 
 <script>
 import HeaderTemplate from "./Header.vue";
-import {Button, TextInput} from "react-native-paper";
+import {Button, TextInput, Title} from "react-native-paper";
 import background_image from "../../assets/Register-background.png";
 import axios from "react-native-axios";
 import store from "../../store";
 
 export default {
     name: "HomeScreen",
-    components: {HeaderTemplate, Button, TextInput},
+    components: {HeaderTemplate, Button, TextInput, Title},
     data() {
         return {
             background_image,
@@ -110,6 +119,7 @@ export default {
             password: "",
             re_password: "",
             email: "",
+            re_email:"",
             userInformation: null,
             api: this.$api_url,
         }
@@ -123,11 +133,6 @@ export default {
         this.getUser();
     },
     methods: {
-        changePassword() {
-            // ChangePassword Function
-            this.view_Password = !this.view_Password;
-            this.menu = !this.menu;
-        },
         changeEmail() {
             // ChangeEmail Function
             this.view_Email = !this.view_Email;
@@ -153,6 +158,71 @@ export default {
                         console.log("Error", error.message);
                     }
                 });
+        },
+        updatePassword() {
+            if (this.password && this.re_password && this.password === this.re_password) {
+                axios({
+                    method: "put",
+                    headers: {'x-access-token': store.state.userObj.jwt},
+                    url: this.$api_url + 'api/user/' + store.state.userObj.userid,
+                    data: {
+                        password: this.password,
+                    },
+                })
+                    .then((res) => {
+                            this.getUser()
+                            this.view_Password = !this.view_Password;
+                            this.menu = !this.menu;
+                            alert("you changed your mail successfully")
+                        })
+                    .catch(function (error) {
+                        alert("something went Wrong")
+                        if (error.response) {
+                            console.log(error.response.status);
+                            console.log(error.response.data);
+                        } else if (error.request) {
+                            console.log(error.request);
+                        } else {
+                            console.log("Error", error.message);
+                        }
+                    });
+            } else {
+                alert("check your Input");
+            }
+            getUser()
+            this.view_Password = !this.view_Password;
+            this.menu = !this.menu;
+        },
+        updateMail() {
+            if (this.email && this.re_email && this.email === this.re_email) {
+                axios({
+                    method: "put",
+                    headers: {'x-access-token': store.state.userObj.jwt},
+                    url: this.$api_url + 'api/user/' + store.state.userObj.userid,
+                    data: {
+                        email: this.email,
+                    },
+                })
+                    .then((res) => {
+                            this.getUser()
+                            this.view_Email = !this.view_Email;
+                            this.menu = !this.menu;
+                            alert("you changed your mail successfully")
+                        })
+                    .catch(function (error) {
+                        alert("something went Wrong")
+                        if (error.response) {
+                            console.log(error.response.status);
+                            console.log(error.response.data);
+                        } else if (error.request) {
+                            console.log(error.request);
+                        } else {
+                            console.log("Error", error.message);
+                        }
+                    });
+            } else {
+                alert("check your Input");
+            }
         },
     }
 }
