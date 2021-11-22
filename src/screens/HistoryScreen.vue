@@ -15,6 +15,7 @@
             </View>
             <View :style="{ flex: 5 }"></View>
             <View :style="{ flex: 15 }">
+                <nb-icon :onPress="historyData" :style="{fontSize: 40}" name="refresh" />
                 <nb-list>
                     <nb-list-item>
                         <nb-left>
@@ -26,11 +27,23 @@
                         <nb-right>
                             <text>Date</text>
                         </nb-right>
-                    </nb-list-item>
-                    <ScrollView>
+                    </nb-list-item >
+                    <nb-list-item v-if="!logs">
+                        <nb-left>
+                            <text></text>
+                        </nb-left>
+                        <nb-body>
+                            <text>no Logs</text>
+                        </nb-body>
+                        <nb-right>
+                            <text></text>
+                        </nb-right>
+                    </nb-list-item >
+                    <nb-spinner v-if="loading"></nb-spinner>
+                    <ScrollView v-if="logs">
                         <nb-list-item
-                            v-for="log in getHistory()"
-                            :key="log.roomName"
+                            v-for="log in logs"
+                            :key="log.created"
                             button
                         >
                             <nb-left>
@@ -67,6 +80,7 @@ export default {
     data() {
         return {
             defaultBg,
+            loading: false,
             logs: null,
         };
     },
@@ -76,6 +90,7 @@ export default {
         },
     },
     mounted() {
+        this.historyData();
     },
     props: {
         navigation: {
@@ -89,11 +104,9 @@ export default {
         formatTime(date) {
             return moment(date).locale("de").format("LTS");
         },
-        getHistory() {
-            let test = this.historyData();
-            return this.logs;
-        },
         async historyData() {
+            this.loading = true
+            this.logs = null;
             let url =
                 this.$api_url + "api/user/" +
                 store.state.userObj.userid +
@@ -103,7 +116,10 @@ export default {
                     "x-access-token": store.state.userObj.jwt,
                 },
             });
-            this.logs = res.data;
+            if(res.data[0].created){
+                this.logs = res.data;
+            }
+            this.loading = false
         },
     },
 };
