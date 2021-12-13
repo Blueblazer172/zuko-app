@@ -4,7 +4,7 @@
             <header-template v-bind:navigation="this.props.navigation"></header-template>
             <View :style="{ flex: 1 }">
                 <view class="text-container">
-                    <nb-h1 class="text-color-white">QrCodeScanner</nb-h1>
+                    <nb-text class="text-welcome">QrCode</nb-text>
                     <text class="text-color-white">
                         Press the Button to open the Camera, scan the Qr-Code on the door, to open it
                     </text>
@@ -39,6 +39,11 @@
                             <Button mode="outlined" :style="{ width: 200, margin: 15 }" :onPress="askPermission">
                                 <text class="text-color-black">Access-Room</text>
                             </Button>
+                            <view v-if="askForPerm">
+                                <Button mode="outlined" :style="{ width: 200, margin: 15 }" :onPress="askForPermission">
+                                    <text class="text-color-black">Ask for Permission</text>
+                                </Button>
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -67,6 +72,7 @@ export default {
             BarCodeScanner: BarCodeScanner,
             BarcodeData: null,
             showCam: false,
+            askForPerm: false,
         };
     },
     mounted() {
@@ -101,6 +107,12 @@ export default {
                 }
             })
                 .then((res) => {
+                    if (res.data === "Permission denied"){
+                        this.askForPerm = true
+                    } else {
+                        this.askForPerm = false;
+                        this.BarcodeData = null
+                    }
                     alert(res.data)
                 })
                 .catch(function (error) {
@@ -116,6 +128,23 @@ export default {
                         console.log("Error", error.message);
                     }
                 });
+        },
+        askForPermission(){
+            axios({
+                method: 'post',
+                headers: {'x-access-token': store.state.userObj.jwt},
+                url: this.$api_url +'api/permission/request',
+                data: {
+                    userId: store.state.userObj.userid,
+                    roomName: this.BarcodeData.room
+                }
+            }).then((res) => {
+                    alert("Permission requested, our Admin will contact you soon");
+            }).catch(function (error) {
+                console.log(error);
+            });
+            this.askForPerm = false;
+            this.BarcodeData = null
         },
         toggleCam() {
             this.showCam = !this.showCam;
@@ -156,5 +185,9 @@ export default {
 
 .text-color-black {
     color: black;
+}
+.text-welcome {
+    font-size: 50;
+    font-weight: bold;
 }
 </style>

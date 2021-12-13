@@ -69,8 +69,28 @@ export default {
         }
     },
     methods: {
+        validateRegister(){
+            if (!this.password || !this.rePassword || !this.email || !this.name || !this.username){
+                alert("you need to supply all everything");
+                return false;
+            } else {
+                if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)){
+                    alert("supply e-mail with correct format")
+                }
+                else if (!/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(this.password)){
+                    alert("password must be at least 8 letters, a symbol, upper and lower case letters and a number")
+                }
+                else if(this.password !== this.rePassword){
+                    alert("please supply matching passwords")
+                }
+                else{
+                    return true;
+                }
+            }
+            
+        },
         async register() {
-            if (this.password && this.password === this.rePassword) {
+            if (this.validateRegister()) {
                 const user = {
                     email: this.email,
                     name: this.name,
@@ -101,8 +121,6 @@ export default {
                 } else {
                     alert(register.data.message);
                 }
-            } else {
-                alert("Beide Passwörter müssen übereinstimmen");
             }
         },
         terms() {

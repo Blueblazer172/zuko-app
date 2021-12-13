@@ -42,7 +42,7 @@
                     <nb-spinner v-if="loading"></nb-spinner>
                     <ScrollView v-if="logs">
                         <nb-list-item
-                            v-for="log in logs"
+                            v-for="log in logs.slice().reverse()"
                             :key="log.created"
                             button
                         >
@@ -107,19 +107,22 @@ export default {
         async historyData() {
             this.loading = true
             this.logs = null;
-            let url =
-                this.$api_url + "api/user/" +
-                store.state.userObj.userid +
-                "/log";
-            const res = await axios.get(url, {
-                headers: {
-                    "x-access-token": store.state.userObj.jwt,
-                },
-            });
-            if(res.data[0].created){
-                this.logs = res.data;
+            if (store.state.userObj.userid){
+                let url =
+                    this.$api_url + "api/user/" + store.state.userObj.userid + "/log";
+                const res = await axios.get(url, {
+                    headers: {
+                        "x-access-token": store.state.userObj.jwt,
+                    },
+                });
+                if(res.data[0].created){
+                    this.logs = res.data;
+                }
+                this.loading = false
             }
-            this.loading = false
+            else {
+                this.loading = false
+            }
         },
     },
 };

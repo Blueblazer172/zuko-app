@@ -61,6 +61,7 @@ import Logo from "../../assets/icon.png";
 import {Button} from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import store from "../../store";
+import axios from "react-native-axios";
 
 export default {
     name: "HomeScreen",
@@ -79,7 +80,7 @@ export default {
     methods: {
         openDrawer() {
             // @TODO ?
-        }
+        },
     },
     computed: {
         logging_in() {
@@ -87,20 +88,37 @@ export default {
         },
         userData() {
             return store.state.userObj;
-        }
+        },
     },
     async created() {
         let jwt = await AsyncStorage.getItem("jwt")
         let userid = await AsyncStorage.getItem("userid")
-        AsyncStorage.getItem("username").then((val) => {
-            if (val) {
-                this.loaded = true;
-                this.navigation.navigate("Home");
-                store.dispatch("SET_USER", {userObj: {username: val, jwt: jwt, userid: userid}});
-            } else {
-                this.loaded = true;
-            }
-        })
+        let url = this.$api_url + "api/user/verify/" + userid
+        if (userid){
+            axios.get(url, {
+                    headers: {
+                        "x-access-token": jwt,
+                    },
+                }).then((res) => {
+                AsyncStorage.getItem("username").then((val) => {
+                    if (val) {
+                        this.loaded = true;
+                        this.navigation.navigate("Home");
+                        store.dispatch("SET_USER", {userObj: {username: val, jwt: jwt, userid: userid}});
+                    } else {
+                        this.loaded = true;
+                    }
+                })     
+                }).catch(function (error) {
+                        if (error.response.status == "401"){
+                            alert("no valid token")
+                            store.dispatch("LOGOUT", () => {});
+                            store.state.userObj = {};
+                        } else{
+                            console.log(error.response.status)
+                        }
+                });
+        }
     }
 };
 </script>

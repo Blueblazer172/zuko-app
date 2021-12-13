@@ -97,8 +97,17 @@ export default {
         },
     },
     methods: {
-        signIn() {
+        valdiateLogin(){
             if (this.username && this.password) {
+                return true;
+            }
+            else if ((this.username && !this.password) || (!this.username && this.passwort) || (!this.username && !this.passwort)){
+                alert("you need to supply your username and password");
+                return false;
+            }
+        },
+        signIn() {
+            if (this.valdiateLogin()) {    
                 axios({
                     method: "post",
                     url: this.$api_url + "api/auth/signin",
@@ -106,33 +115,22 @@ export default {
                         password: this.password,
                         username: this.username,
                     },
-                })
-                    .then((res) => {
-                        if (res.status === 200) {
-                            store.dispatch("LOGIN", {
-                                userObj: {
-                                    username: res.data.username,
-                                    jwt: res.data.accessToken,
-                                    userid: res.data.id.toString(),
-                                },
-                                navigate: this.navigation.navigate,
-                            });
-                        } else {
-                            alert(res.data.message);
-                        }
-                    })
-                    .catch(function (error) {
-                        if (error.response) {
-                            console.log(error.response.status);
-                            console.log(error.response.data);
-                        } else if (error.request) {
-                            console.log(error.request);
-                        } else {
-                            console.log("Error", error.message);
-                        }
-                    });
-            } else {
-                alert("Supply username and password");
+                }).then((res) => {
+                    if (res.status === 200) {
+                        store.dispatch("LOGIN", {
+                            userObj: {
+                                username: res.data.username,
+                                jwt: res.data.accessToken,
+                                userid: res.data.id.toString(),
+                            },
+                            navigate: this.navigation.navigate,
+                        });
+                    } else {
+                        alert(res.data.message);
+                    }
+                }).catch(function (error) {
+                        console.log(error)
+                });
             }
         },
     },

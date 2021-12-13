@@ -130,7 +130,9 @@ export default {
         },
     },
     mounted() {
-        this.getUser();
+        if (store.state.userObj.userId){
+            this.getUser();
+        }
     },
     methods: {
         changeEmail() {
@@ -145,7 +147,6 @@ export default {
                 url: this.$api_url + 'api/user/' + store.state.userObj.userid,
             })
                 .then((res) => {
-                    console.log(res.data)
                     this.userInformation = res.data
                 })
                 .catch(function (error) {
@@ -166,17 +167,18 @@ export default {
                     headers: {'x-access-token': store.state.userObj.jwt},
                     url: this.$api_url + 'api/user/' + store.state.userObj.userid,
                     data: {
-                        password: this.password,
+                        fields:{
+                            password: this.password,
+                        }
                     },
                 })
                     .then((res) => {
                             this.getUser()
                             this.view_Password = !this.view_Password;
                             this.menu = !this.menu;
-                            alert("you changed your mail successfully")
+                            alert("you changed your password successfully")
                         })
                     .catch(function (error) {
-                        alert("something went Wrong")
                         if (error.response) {
                             console.log(error.response.status);
                             console.log(error.response.data);
@@ -200,7 +202,9 @@ export default {
                     headers: {'x-access-token': store.state.userObj.jwt},
                     url: this.$api_url + 'api/user/' + store.state.userObj.userid,
                     data: {
-                        email: this.email,
+                        fields:{
+                            email: this.email,
+                        }
                     },
                 })
                     .then((res) => {
