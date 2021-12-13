@@ -149,6 +149,7 @@ export default {
         toggleCam() {
             this.showCam = !this.showCam;
             this.BarcodeData = "";
+            this.askForPerm = false;
         },
     },
 };

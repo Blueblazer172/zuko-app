@@ -110,6 +110,11 @@ import store from "../../store";
 export default {
     name: "HomeScreen",
     components: {HeaderTemplate, Button, TextInput, Title},
+    props: {
+        navigation: {
+            type: Object,
+        },
+    },
     data() {
         return {
             background_image,
@@ -130,11 +135,17 @@ export default {
         },
     },
     mounted() {
-        if (store.state.userObj.userId){
+        let user = this.userData
+        if (user.userid){
             this.getUser();
         }
     },
     methods: {
+        logout() {
+            store.dispatch("LOGOUT", () =>
+                store.state.userObj = {}
+            );
+        },
         changeEmail() {
             // ChangeEmail Function
             this.view_Email = !this.view_Email;
@@ -173,10 +184,11 @@ export default {
                     },
                 })
                     .then((res) => {
-                            this.getUser()
                             this.view_Password = !this.view_Password;
                             this.menu = !this.menu;
                             alert("you changed your password successfully")
+                            this.logout()
+                            this.navigation.navigate("Login");
                         })
                     .catch(function (error) {
                         if (error.response) {
@@ -191,9 +203,6 @@ export default {
             } else {
                 alert("check your Input");
             }
-            getUser()
-            this.view_Password = !this.view_Password;
-            this.menu = !this.menu;
         },
         updateMail() {
             if (this.email && this.re_email && this.email === this.re_email) {

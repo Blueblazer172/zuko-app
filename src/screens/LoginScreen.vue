@@ -125,6 +125,8 @@ export default {
                             },
                             navigate: this.navigation.navigate,
                         });
+                        this.password = ""
+                        this.username = ""
                     } else {
                         alert(res.data.message);
                     }
